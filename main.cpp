@@ -1,6 +1,6 @@
 #include "Map.h"
 
 int main() {
-	Map map;
+	Map map{};
 	return (int)map.size();
 }
