@@ -1,4 +1,4 @@
-#include "Map.h"
+#include "Map.hpp"
 
 Map::Map(){
 }
@@ -24,6 +24,10 @@ size_t Map::size() const {
 }
 
 int& Map::insert(const char* key) {
+	if (strlen(key) > max_key_length)
+		return (int&)max_key_length;
+	if (key == nullptr || strcmp(key, "") == 0)
+		throw std::out_of_range("Key not found");
 	Pair* tmp = this->find(key);
 	if (tmp != nullptr)
 		return (int&)tmp->value;
@@ -33,6 +37,8 @@ int& Map::insert(const char* key) {
 }
 
 Pair* Map::find(const char* key) {
+	if (strlen(key) > max_key_length)
+		return nullptr;
 	for (auto i = list.begin(); i != list.end(); i++) {
 		if (strcmp((*i).key, key) == 0)
 			return &(*i);
@@ -53,6 +59,7 @@ void Map::erase(const char* key) {
 			_size--;
 		}
 	}
+	throw std::out_of_range("Key not found");
 }
 
 int& Map::operator[](const char* key) {

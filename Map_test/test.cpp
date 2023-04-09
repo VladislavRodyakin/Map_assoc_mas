@@ -1,9 +1,7 @@
 #include "gtest/gtest.h"
-//#include "F:\!!Универ\Прога\4 сем\Map_assoc_mas\Map.h"
-//#include "F:\\!!Универ\\Прога\\4 сем\\Map_assoc_mas\\Map.h"
-#include "../Map.h"
+#include "../Map.hpp"
 
-char keys[] = { '1','2','3','4','5','6', '7', '8','9' };
+const char* keys[] = { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9" };
 
 //Map();
 TEST(MapStart, MapStartsEmpty) {
@@ -20,13 +18,11 @@ TEST(MapCopy, MapRightCopied) {
 }
 TEST(MapCopy, MapRightCopiedManyElem) {
 	Map MapExample1{};
-	for (int i = 0; i < 9; i++) {
-		MapExample1.insert(keys + i) = i;
-	}
+	for (int i = 0; i < 9; i++)
+		MapExample1.insert(keys[i]) = i;
 	Map MapExample2(MapExample1);
-	for (int i = 0; i < 9; i++) {
-		EXPECT_EQ(i, MapExample2.find(keys + i)->value);
-	}
+	for (int i = 0; i < 9; i++)
+		EXPECT_EQ(i, MapExample2.find(keys[i])->value);
 }
 
 //Map& operator=(const Map&);
@@ -52,14 +48,13 @@ TEST(MapOperatorEq, NonEmptyCopyElemnt) {
 }
 TEST(MapOperatorEq, NonEmptyCopyManyElemnts) {
 	Map MapExample1{};
-	for (int i = 0; i < 9; i++) {
-		MapExample1.insert(keys + i) = i;
-	}
+	for (int i = 0; i < 9; i++)
+		MapExample1.insert(keys[i]) = i;
 	Map MapExample2{};
 	MapExample2 = MapExample1;
 	for (int i = 0; i < 9; i++) {
-		EXPECT_EQ(MapExample1.find(keys + i)->value, MapExample2.find(keys + i)->value);
-		EXPECT_EQ(MapExample1.find(keys + i)->key, MapExample1.find(keys + i)->key);
+		EXPECT_EQ(MapExample1.find(keys[i])->value, MapExample2.find(keys[i])->value);
+		EXPECT_EQ(MapExample1.find(keys[i])->key, MapExample1.find(keys[i])->key);
 	}
 }
 
@@ -70,17 +65,15 @@ TEST(MapSize, SizeOfEmpty) {
 }
 TEST(MapSize, SizeOfNotEmptyMap) {
 	Map MapExample{};
-	for (int i = 0; i < 9; i++) {
-		MapExample.insert(keys + i);
-	}
+	for (int i = 0; i < 9; i++)
+		MapExample.insert(keys[i]);
 	EXPECT_EQ(9, MapExample.size());
 }
 TEST(MapSize, SizeAfterErase) {
 	Map MapExample{};
-	for (int i = 0; i < 9; i++) {
-		MapExample.insert(keys + i);
-	}
-	MapExample.erase(keys);
+	for (int i = 0; i < 9; i++)
+		MapExample.insert(keys[i]);
+	MapExample.erase(keys[0]);
 	EXPECT_EQ(8, MapExample.size());
 }
 
@@ -92,9 +85,8 @@ TEST(MapInsert, InsertOneElementWithoutVal) {
 }
 TEST(MapInsert, InsertManyElementsWithoutVal) {
 	Map MapExample{};
-	for (int i = 0; i < 9; i++) {
-		MapExample.insert(keys + i);
-	}
+	for (int i = 0; i < 9; i++)
+		MapExample.insert(keys[i]);
 	EXPECT_EQ(9, MapExample.size());
 
 }
@@ -105,12 +97,10 @@ TEST(MapInsert, InsertOneElementWithVal) {
 }
 TEST(MapInsert, InsertManyElementWithVal) {
 	Map MapExample{};
-	for (int i = 0; i < 9; i++) {
-		MapExample.insert(keys + i) = i;
-	}
-	for (int i = 0; i < 9; i++) {
-		EXPECT_EQ(i, MapExample.find(keys + i)->value);
-	}
+	for (int i = 0; i < 9; i++)
+		MapExample.insert(keys[i]) = i;
+	for (int i = 0; i < 9; i++)
+		EXPECT_EQ(i, MapExample.find(keys[i])->value);
 }
 
 //Pair* at(size_t index);
@@ -126,21 +116,17 @@ TEST(IndexTest, EmptyMapAndNegativeIndex) {
 }
 TEST(IndexTest, NotEmptyMapKeyControl) {
 	Map MapExample{};
-	for (int i = 0; i < 9; i++) {
-		MapExample.insert(keys + i);
-	}
-	for (int i = 0; i < 9; i++) {
-		EXPECT_EQ(*(keys + i), *(MapExample.at(i))->key);
-	}
+	for (int i = 0; i < 9; i++)
+		MapExample.insert(keys[i]);
+	for (int i = 0; i < 9; i++)
+		EXPECT_EQ(*(keys[i]), *(MapExample.at(i))->key);
 }
 TEST(IndexTest, NotEmptyMapValControl) {
 	Map MapExample{};
-	for (int i = 0; i < 9; i++) {
-		MapExample.insert(keys + i) = i;
-	}
-	for (int i = 0; i < 9; i++) {
+	for (int i = 0; i < 9; i++)
+		MapExample.insert(keys[i]) = i;
+	for (int i = 0; i < 9; i++)
 		EXPECT_EQ(i, MapExample.at(i)->value);
-	}
 }
 
 //Pair* find(const char* key);
@@ -150,18 +136,15 @@ TEST(MapFind, FindNotExisting) {
 }
 TEST(MapFind, InsertOneElementAndFindKey) {
 	Map MapExample{};
-	MapExample.insert(keys);
-	EXPECT_EQ(*keys, *(MapExample.find(keys)->key));
+	MapExample.insert(keys[0]);
+	EXPECT_EQ(*(keys[0]), *(MapExample.find(keys[0])->key));
 }
 TEST(MapFind, InsertManyElementsAndFind) {
 	Map MapExample{};
-	for (int i = 0; i < 9; i++) {
-		MapExample.insert(keys + i);
-	}
-	for (int i = 0; i < 9; i++) {
-		EXPECT_EQ(*(keys + i), *(MapExample.find(keys + i)->key));
-	}
-
+	for (int i = 0; i < 9; i++)
+		MapExample.insert(keys[i]);
+	for (int i = 0; i < 9; i++)
+		EXPECT_EQ(*(keys[i]), *(MapExample.find(keys[i])->key));
 }
 
 //void erase(const char* key);
@@ -179,12 +162,10 @@ TEST(MapErase, EraseOneElementWithVal) {
 }
 TEST(MapErase, EraseManyElements) {
 	Map MapExample{};
-	for (int i = 0; i < 9; i++) {
-		MapExample.insert(keys + i) = i;
-	}
-	for (int k = 0; k < 9; k++) {
-		MapExample.erase(keys + k);
-	}
+	for (int i = 0; i < 9; i++)
+		MapExample.insert(keys[i]) = i;
+	for (int j = 0; j < 9; j++)
+		MapExample.erase(keys[j]);
 	EXPECT_EQ(0, MapExample.size());
 }
 
@@ -201,12 +182,10 @@ TEST(MapIndexOperator, TakeOneElem) {
 }
 TEST(MapIndexOperator, TakeManyElem) {
 	Map MapExample{};
-	for (int i = 0; i < 9; i++) {
-		MapExample.insert(keys + i) = i;
-	}
-	for (int i = 0; i < 9; i++) {
-		EXPECT_EQ(i, MapExample[keys + i]);
-	}
+	for (int i = 0; i < 9; i++)
+		MapExample.insert(keys[i]) = i;
+	for (int i = 0; i < 9; i++)
+		EXPECT_EQ(i, MapExample[keys[i]]);
 }
 
 //const int& operator[](const char* key) const;
