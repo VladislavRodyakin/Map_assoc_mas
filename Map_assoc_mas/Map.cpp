@@ -31,7 +31,7 @@ int& Map::insert(const char* key) {
 	Pair* tmp = this->find(key);
 	if (tmp != nullptr)
 		return (int&)tmp->value;
-	list.push_back(Pair(key));
+	list.push_back(PairEq(key));
 	_size++;
 	return (int&)list.back().value;
 }
@@ -39,10 +39,9 @@ int& Map::insert(const char* key) {
 Pair* Map::find(const char* key) {
 	if (strlen(key) > max_key_length)
 		return nullptr;
-	for (auto i = list.begin(); i != list.end(); i++) {
+	for (auto i = list.begin(); i != list.end(); i++)
 		if (strcmp((*i).key, key) == 0)
 			return &(*i);
-	}
 	return nullptr;
 }
 
@@ -57,6 +56,7 @@ void Map::erase(const char* key) {
 		if (strcmp((*i).key, key) == 0) {
 			list.erase(i);
 			_size--;
+			return;
 		}
 	}
 	throw std::out_of_range("Key not found");
@@ -67,9 +67,8 @@ int& Map::operator[](const char* key) {
 }
 
 const int& Map::operator[](const char* key) const {
-	for (auto i = list.begin(); i != list.end(); i++) {
+	for (auto i = list.begin(); i != list.end(); i++)
 		if (strcmp((*i).key, key)==0)
 			return (const int&)i->value;
-	}
 	throw std::out_of_range("Key not found");
 }

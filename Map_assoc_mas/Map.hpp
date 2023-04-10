@@ -5,12 +5,13 @@
 const size_t max_key_length = 256;
 
 struct Pair {
-    Pair() = default;
-
     const char key[max_key_length]{};
     int value{};
+};
 
-    Pair& operator=(const Pair& from) {
+struct PairEq : Pair {
+    PairEq() = default;
+    PairEq& operator=(const PairEq& from) {
         if (this == &from)
             return *this;
         memcpy((char*)key, from.key, max_key_length);
@@ -18,10 +19,11 @@ struct Pair {
         return *this;
     }
 
-    Pair(const Pair& from) : value{ from.value } {
+    PairEq(const PairEq& from) /*: value{ from.value } */{
+        value = from.value;
         memcpy((char*)key, from.key, max_key_length);
     }
-    Pair(const char* _key) {
+    PairEq(const char* _key) {
         memcpy((char*)key, _key, max_key_length);
     }
 };
@@ -43,5 +45,5 @@ public:
 
 protected:
     size_t _size = 0;
-    std::vector <Pair> list;
+    std::vector <PairEq> list;
 };
