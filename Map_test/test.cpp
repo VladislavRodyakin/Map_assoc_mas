@@ -210,14 +210,29 @@ TEST(MapKeyFailedSituations, EmptyPtr) {
 	EXPECT_THROW(map.erase(""), std::out_of_range);
 	EXPECT_THROW(map.insert(""), std::out_of_range);
 }
-//
-//TEST(MapKeyFailedSituations, LongKey) {
-//	Map map{};
-//	const char* key257 = 
-//	EXPECT_NO_THROW(map.insert(key257)); // проходит
-//	ASSERT_EQ(map.size(), 1); // проходит
-//	EXPECT_EQ(map.find(key255), nullptr); // проходит
-//	EXPECT_NE(map.find(key256), nullptr); // упс, не проходит
-//	EXPECT_NE(map.find(key257), nullptr); // проходит?!
-//	EXPECT_NE(map.find(key258), nullptr); // упс, не проходит 
-//}
+
+TEST(MapKeyFailedSituations, LongKey) {
+	Map map{};
+	const char* key255 =
+		"12345" "12345" "12345" "12345" "12345" "12345" "12345" "12345" "12345" "12345"
+		"12345" "12345" "12345" "12345" "12345" "12345" "12345" "12345" "12345" "12345"
+		"12345" "12345" "12345" "12345" "12345" "12345";
+	const char* key256 =
+		"12345" "12345" "12345" "12345" "12345" "12345" "12345" "12345" "12345" "12345"
+		"12345" "12345" "12345" "12345" "12345" "12345" "12345" "12345" "12345" "12345"
+		"12345" "12345" "12345" "12345" "12345" "12345" "1";
+	const char* key257 =
+		"12345" "12345" "12345" "12345" "12345" "12345" "12345" "12345" "12345" "12345"
+		"12345" "12345" "12345" "12345" "12345" "12345" "12345" "12345" "12345" "12345"
+		"12345" "12345" "12345" "12345" "12345" "12345" "12";
+	const char* key258 =
+		"12345" "12345" "12345" "12345" "12345" "12345" "12345" "12345" "12345" "12345"
+		"12345" "12345" "12345" "12345" "12345" "12345" "12345" "12345" "12345" "12345"
+		"12345" "12345" "12345" "12345" "12345" "12345" "123";
+	EXPECT_NO_THROW(map.insert(key257)); // проходит
+	ASSERT_EQ(map.size(), 1); // проходит
+	EXPECT_EQ(map.find(key255), nullptr); // проходит
+	EXPECT_NE(map.find(key256), nullptr); // упс, не проходит
+	EXPECT_NE(map.find(key257), nullptr); // проходит?!
+	EXPECT_NE(map.find(key258), nullptr); // упс, не проходит 
+}
