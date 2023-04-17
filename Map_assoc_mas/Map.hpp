@@ -24,7 +24,7 @@ struct PairEq : Pair {
         memcpy((char*)key, from.key, max_key_length);
     }
     PairEq(const char* _key) {
-        memcpy((char*)key, _key, max_key_length);
+        memcpy((char*)key, _key, max_key_length);//strcpy с ограничением
     }
 };
 
