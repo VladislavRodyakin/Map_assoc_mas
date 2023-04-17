@@ -201,7 +201,7 @@ TEST(MapIndexOperatorConst, TakeNotExistingElem) {
 
 TEST(MapKeyFailedSituations, NullPtr) {
 	Map map{};
-	EXPECT_THROW(map.insert(nullptr), std::out_of_range);
+	EXPECT_THROW(map.insert(nullptr), std::out_of_range);//проходит
 	EXPECT_THROW(map.erase(nullptr), std::out_of_range);
 }
 
@@ -236,3 +236,9 @@ TEST(MapKeyFailedSituations, LongKey) {
 	EXPECT_NE(map.find(key257), nullptr); // проходит?!
 	EXPECT_NE(map.find(key258), nullptr); // упс, не проходит 
 }
+
+//TEST(MapInsert, InsertMany257Elements) {
+//	Map MapExample{};
+//	MapExample.insert(*(list_of_keys_257));
+//	EXPECT_STREQ(*list_of_keys_256, MapExample.find(*(list_of_keys_256))->key);
+//}

@@ -1,22 +1,24 @@
 #include "Map.hpp"
+#include <string>
 
 class Predicate {
 private:
 	/*const */std::string key;
 public:
-	Predicate(const std::string& _key) /*:key(_key)*/{
+	Predicate(const /*std::string&*/ char* _key) /*:key(_key)*/{
 		//(std::string)key=_key;
-		key = _key;
-		if (_key.size() > 255) {
+
+		key = (std::string)_key;
+		/*if (strlen(_key) > 255) {
 			key.resize(255);
-		}
+		}*/
 		//if (key.size() > max_key_length) {
 		//	key.resize(max_key_length);
 		//}
 	}
 	
 	bool operator() (const Pair& p) {
-		return key == p.key;// можно сравнивать с ограничениями
+		return key.compare(0, max_key_length, p.key);// можно сравнивать с ограничениями
 	}
 
 };
@@ -57,12 +59,12 @@ int& Map::insert(const char* key) {
 Pair* Map::find(const char* key) {
 	/*if (strlen(key) > max_key_length)
 		return nullptr;*/
-	if (strlen(key) >= max_key_length)
-		throw std::out_of_range("Key too long");
 	if (key == nullptr)
 		throw std::out_of_range("Key is null");
 	if (key == std::string())
 		throw std::out_of_range("Key is empty");
+	if (strlen(key) >= max_key_length)
+		throw std::out_of_range("Key too long");
 	for (auto i = list.begin(); i != list.end(); i++)
 		if (strcmp((*i).key, key) == 0)
 			return &(*i);
@@ -82,6 +84,12 @@ void Map::erase(const char* key) {
 	//		return;
 	//	}
 	//}
+	if (key == nullptr)
+		throw std::out_of_range("Key is null");
+	if (key == std::string())
+		throw std::out_of_range("Key is empty");
+	if (strlen(key) >= max_key_length)
+		throw std::out_of_range("Key too long");
 	auto it = std::find_if(list.begin(), list.end(), Predicate(key));
 	if (it != list.end())
 		list.erase(it);

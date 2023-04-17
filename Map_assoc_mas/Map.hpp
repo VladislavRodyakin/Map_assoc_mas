@@ -1,4 +1,5 @@
 #pragma once
+#define _CRT_SECURE_NO_WARNINGS
 #include <iostream>
 #include <vector>
 
@@ -21,10 +22,10 @@ struct PairEq : Pair {
 
     PairEq(const PairEq& from) /*: value{ from.value } */{
         value = from.value;
-        memcpy((char*)key, from.key, max_key_length);
+        std::strncpy((char*)key, from.key, strlen(from.key));
     }
     PairEq(const char* _key) {
-        memcpy((char*)key, _key, max_key_length);//strcpy с ограничением
+        std::strncpy((char*)key, _key, strlen(_key));//strcpy с ограничением
     }
 };
 
