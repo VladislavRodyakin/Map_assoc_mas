@@ -1,5 +1,4 @@
 #pragma once
-#define _CRT_SECURE_NO_WARNINGS
 #include <iostream>
 #include <vector>
 
@@ -12,20 +11,22 @@ struct Pair {
 
 struct PairEq : Pair {
     PairEq() = default;
+
     PairEq& operator=(const PairEq& from) {
         if (this == &from)
             return *this;
-        memcpy((char*)key, from.key, max_key_length);
+        memcpy_s((char*)key, sizeof(key), from.key, sizeof(from.key));
         value = from.value;
         return *this;
     }
 
-    PairEq(const PairEq& from) /*: value{ from.value } */{
+    PairEq(const PairEq& from) {
         value = from.value;
-        std::strncpy((char*)key, from.key, strlen(from.key));
+        memcpy_s((char*)key, sizeof(key), from.key, sizeof(from.key));
     }
+
     PairEq(const char* _key) {
-        std::strncpy((char*)key, _key, strlen(_key));//strcpy с ограничением
+        strncpy_s((char*)key, _countof(key), _key, _TRUNCATE);
     }
 };
 
